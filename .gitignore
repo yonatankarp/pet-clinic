@@ -116,6 +116,8 @@ Desktop.ini
 *.*~
 *~
 .merge_file*
+pom.xml.releaseBackup
+release.properties
 
 ######################
 # Gradle Wrapper
