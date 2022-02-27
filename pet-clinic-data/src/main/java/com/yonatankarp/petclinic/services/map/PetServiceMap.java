@@ -2,9 +2,9 @@ package com.yonatankarp.petclinic.services.map;
 
 import java.util.Set;
 import com.yonatankarp.petclinic.model.Pet;
-import com.yonatankarp.petclinic.services.CrudService;
+import com.yonatankarp.petclinic.services.PetService;
 
-public class PetServiceMap extends AbstractMapService<Pet, Long> implements CrudService<Pet, Long> {
+public class PetServiceMap extends AbstractMapService<Pet, Long> implements PetService {
     @Override
     public Pet findById(final Long id) {
         return super.findById(id);
