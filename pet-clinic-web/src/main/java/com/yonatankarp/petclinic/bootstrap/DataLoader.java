@@ -8,9 +8,6 @@ import com.yonatankarp.petclinic.model.Vet;
 import com.yonatankarp.petclinic.services.OwnerService;
 import com.yonatankarp.petclinic.services.PetService;
 import com.yonatankarp.petclinic.services.VetService;
-import com.yonatankarp.petclinic.services.map.OwnerServiceMap;
-import com.yonatankarp.petclinic.services.map.PetServiceMap;
-import com.yonatankarp.petclinic.services.map.VetServiceMap;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -21,10 +18,10 @@ public class DataLoader implements CommandLineRunner {
     private final VetService vetService;
     private final PetService petService;
 
-    public DataLoader() {
-        ownerService = new OwnerServiceMap();
-        vetService = new VetServiceMap();
-        petService = new PetServiceMap();
+    public DataLoader(OwnerService ownerService, VetService vetService, PetService petService) {
+        this.ownerService = ownerService;
+        this.vetService = vetService;
+        this.petService = petService;
     }
 
     @Override

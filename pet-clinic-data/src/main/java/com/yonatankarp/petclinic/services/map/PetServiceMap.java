@@ -3,8 +3,11 @@ package com.yonatankarp.petclinic.services.map;
 import java.util.Set;
 import com.yonatankarp.petclinic.model.Pet;
 import com.yonatankarp.petclinic.services.PetService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PetServiceMap extends AbstractMapService<Pet, Long> implements PetService {
+
     @Override
     public Pet findById(final Long id) {
         return super.findById(id);
