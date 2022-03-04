@@ -7,6 +7,7 @@ import com.yonatankarp.petclinic.model.PetType;
 import com.yonatankarp.petclinic.model.Vet;
 import com.yonatankarp.petclinic.services.OwnerService;
 import com.yonatankarp.petclinic.services.PetService;
+import com.yonatankarp.petclinic.services.PetTypeService;
 import com.yonatankarp.petclinic.services.VetService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,15 +18,28 @@ public class DataLoader implements CommandLineRunner {
     private final OwnerService ownerService;
     private final VetService vetService;
     private final PetService petService;
+    private final PetTypeService petTypeService;
 
-    public DataLoader(OwnerService ownerService, VetService vetService, PetService petService) {
+    public DataLoader(OwnerService ownerService, VetService vetService, PetService petService, PetTypeService petTypeService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petService = petService;
+        this.petTypeService = petTypeService;
     }
 
     @Override
     public void run(String... args) {
+
+        final PetType dog = new PetType();
+        dog.setName("Dog");
+        final PetType savedDogType = petTypeService.save(dog);
+
+        final PetType cat = new PetType();
+        cat.setName("Cat");
+        final PetType savedCatType = petTypeService.save(cat);
+
+        System.out.println("Loaded Pet Type...");
+
         final Owner owner1 = new Owner();
         owner1.setFirstName("Michael");
         owner1.setLastName("Weston");
