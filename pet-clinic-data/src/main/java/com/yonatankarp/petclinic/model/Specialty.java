@@ -1,6 +1,5 @@
 package com.yonatankarp.petclinic.model;
 
-import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Vet extends Person {
-    private Set<Specialty> specialties;
+public class Specialty extends BaseEntity {
+    private String description;
 }
