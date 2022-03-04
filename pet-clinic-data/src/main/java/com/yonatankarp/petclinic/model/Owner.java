@@ -1,13 +1,16 @@
 package com.yonatankarp.petclinic.model;
 
 import java.util.Set;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Owner extends Person {
+    private String address;
+    private String city;
+    private String phone;
     private Set<Pet> pets;
 }
