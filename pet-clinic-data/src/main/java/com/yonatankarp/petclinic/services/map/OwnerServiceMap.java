@@ -2,11 +2,23 @@ package com.yonatankarp.petclinic.services.map;
 
 import java.util.Set;
 import com.yonatankarp.petclinic.model.Owner;
+import com.yonatankarp.petclinic.model.Pet;
+import com.yonatankarp.petclinic.model.PetType;
 import com.yonatankarp.petclinic.services.OwnerService;
+import com.yonatankarp.petclinic.services.PetService;
+import com.yonatankarp.petclinic.services.PetTypeService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements OwnerService {
+
+    private final PetTypeService petTypeService;
+    private final PetService petService;
+
+    public OwnerServiceMap(PetTypeService petTypeService, PetService petService) {
+        this.petTypeService = petTypeService;
+        this.petService = petService;
+    }
 
     @Override
     public Owner findById(final Long id) {
@@ -20,7 +32,30 @@ public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements 
 
     @Override
     public Owner save(final Owner owner) {
-        return super.save(owner);
+        if(owner != null) {
+            if(owner.getPets() != null) {
+                owner.getPets().forEach(pet -> {
+                    if(pet.getPetType() != null) {
+                        // Ensure that pet type id is stored to our persistence layer
+                        if(pet.getPetType().getId() == null) {
+                            final PetType savedPetType = petTypeService.save(pet.getPetType());
+                            pet.setPetType(savedPetType);
+                        }
+                    } else {
+                        throw new RuntimeException("Pet type is required.");
+                    }
+
+                    // Ensure that pet id is stored to our persistence layer
+                    if(pet.getId() == null) {
+                        final Pet savedPet = petService.save(pet);
+                        pet.setId(savedPet.getId());
+                    }
+                });
+            }
+            return super.save(owner);
+        }
+
+        return null;
     }
 
     @Override
