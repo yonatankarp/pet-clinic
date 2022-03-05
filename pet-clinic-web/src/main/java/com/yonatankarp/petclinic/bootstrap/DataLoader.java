@@ -14,9 +14,11 @@ import com.yonatankarp.petclinic.services.SpecialtyService;
 import com.yonatankarp.petclinic.services.VetService;
 import com.yonatankarp.petclinic.services.VisitService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
@@ -42,38 +44,38 @@ public class DataLoader implements CommandLineRunner {
         final var dogType = storePetType("Dog");
         final var catType = storePetType("Cat");
 
-        System.out.println("Loaded Pet Type...");
+        log.debug("Loaded Pet Type...");
 
         final var radiology = storeSpecialty("Radiology");
         final var surgery = storeSpecialty("Surgery");
         final var dentistry = storeSpecialty("Dentistry");
 
-        System.out.println("Loaded Specialties...");
+        log.debug("Loaded Specialties...");
 
         final var rasco = storePet(dogType, "Rasco");
         final var oliver = storePet(catType, "Oliver");
 
-        System.out.println("Loaded Pets...");
+        log.debug("Loaded Pets...");
 
         final var mike = storeOwner("Michael", "Weston", "123 Brickell", "Miami", "305-555-0113");
         final var fiona = storeOwner("Fiona", "Glenanne", "123 Brickell", "Miami", "305-555-0113");
 
-        System.out.println("Loaded Owners...");
+        log.debug("Loaded Owners...");
 
         connectPetToOwner(rasco, mike);
         connectPetToOwner(oliver, fiona);
 
-        System.out.println("Connect owners and pets...");
+        log.debug("Connect owners and pets...");
 
         final var sam = storeVet("Sam", "Axe", radiology);
         final var jessie = storeVet("Jessie", "Porter", surgery);
 
-        System.out.println("Loaded Vets...");
+        log.debug("Loaded Vets...");
 
         final var dogVisit = storeVisit(rasco, "Tried Dog");
         final var catVisit = storeVisit(oliver, "Sneezy Kitten");
 
-        System.out.println("Loaded Visits...");
+        log.debug("Loaded Visits...");
     }
 
     private PetType storePetType(final String type) {
