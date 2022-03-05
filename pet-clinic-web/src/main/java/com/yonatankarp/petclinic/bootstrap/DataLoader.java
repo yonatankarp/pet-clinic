@@ -50,23 +50,28 @@ public class DataLoader implements CommandLineRunner {
 
         System.out.println("Loaded Specialties...");
 
-        final var mikesPet = storePet(dogType, "Rasco");
-        final var mike = storeOwner("Michael", "Weston", "123 Brickell", "Miami", "305-555-0113", mikesPet);
+        final var rasco = storePet(dogType, "Rasco");
+        final var oliver = storePet(catType, "Oliver");
 
         System.out.println("Loaded Pets...");
 
-        final var fionasCat = storePet(catType, "Oliver");
-        final var fiona = storeOwner("Fiona", "Glenanne", "123 Brickell", "Miami", "305-555-0113", fionasCat);
+        final var mike = storeOwner("Michael", "Weston", "123 Brickell", "Miami", "305-555-0113");
+        final var fiona = storeOwner("Fiona", "Glenanne", "123 Brickell", "Miami", "305-555-0113");
 
         System.out.println("Loaded Owners...");
+
+        connectPetToOwner(rasco, mike);
+        connectPetToOwner(oliver, fiona);
+
+        System.out.println("Connect owners and pets...");
 
         final var sam = storeVet("Sam", "Axe", radiology);
         final var jessie = storeVet("Jessie", "Porter", surgery);
 
         System.out.println("Loaded Vets...");
 
-        final var dogVisit = storeVisit(mikesPet, "Tried Dog");
-        final var catVisit = storeVisit(fionasCat, "Sneezy Kitten");
+        final var dogVisit = storeVisit(rasco, "Tried Dog");
+        final var catVisit = storeVisit(oliver, "Sneezy Kitten");
 
         System.out.println("Loaded Visits...");
     }
@@ -87,17 +92,21 @@ public class DataLoader implements CommandLineRunner {
                              final String lastName,
                              final String address,
                              final String city,
-                             final String phone,
-                             final Pet pet) {
+                             final String phone) {
         final var owner = new Owner();
         owner.setFirstName(firstName);
         owner.setLastName(lastName);
         owner.setAddress(address);
         owner.setCity(city);
         owner.setPhone(phone);
-        owner.getPets().add(pet);
-        pet.setOwner(owner);
         return ownerService.save(owner);
+    }
+
+    private void connectPetToOwner(final Pet pet, final Owner owner) {
+        pet.setOwner(owner);
+        petService.save(pet);
+        owner.getPets().add(pet);
+        ownerService.save(owner);
     }
 
     private Pet storePet(final PetType petType, final String name) {

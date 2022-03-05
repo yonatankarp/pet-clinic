@@ -2,13 +2,17 @@ package com.yonatankarp.petclinic.model;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@ToString
 @MappedSuperclass
 public class Person extends BaseEntity {
     @Column(name = "first_name")
