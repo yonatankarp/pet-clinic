@@ -7,18 +7,15 @@ import com.yonatankarp.petclinic.model.PetType;
 import com.yonatankarp.petclinic.services.OwnerService;
 import com.yonatankarp.petclinic.services.PetService;
 import com.yonatankarp.petclinic.services.PetTypeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class OwnerMapService extends AbstractMapService<Owner, Long> implements OwnerService {
 
     private final PetTypeService petTypeService;
     private final PetService petService;
-
-    public OwnerMapService(PetTypeService petTypeService, PetService petService) {
-        this.petTypeService = petTypeService;
-        this.petService = petService;
-    }
 
     @Override
     public Owner findById(final Long id) {
@@ -70,6 +67,9 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
 
     @Override
     public Owner findByLastName(String lastName) {
-        return null;
+        return map.values()
+                .stream().filter(owner -> owner.getLastName().equals(lastName))
+                .findFirst()
+                .orElse(null);
     }
 }
