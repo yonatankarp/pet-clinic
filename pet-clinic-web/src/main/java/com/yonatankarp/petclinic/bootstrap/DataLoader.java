@@ -1,6 +1,8 @@
 package com.yonatankarp.petclinic.bootstrap;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
 import com.yonatankarp.petclinic.model.Owner;
 import com.yonatankarp.petclinic.model.Pet;
 import com.yonatankarp.petclinic.model.PetType;
@@ -8,7 +10,6 @@ import com.yonatankarp.petclinic.model.Specialty;
 import com.yonatankarp.petclinic.model.Vet;
 import com.yonatankarp.petclinic.model.Visit;
 import com.yonatankarp.petclinic.services.OwnerService;
-import com.yonatankarp.petclinic.services.PetService;
 import com.yonatankarp.petclinic.services.PetTypeService;
 import com.yonatankarp.petclinic.services.SpecialtyService;
 import com.yonatankarp.petclinic.services.VetService;
@@ -25,7 +26,6 @@ public class DataLoader implements CommandLineRunner {
 
     private final OwnerService ownerService;
     private final VetService vetService;
-    private final PetService petService;
     private final PetTypeService petTypeService;
     private final SpecialtyService specialtyService;
     private final VisitService visitService;
@@ -52,20 +52,13 @@ public class DataLoader implements CommandLineRunner {
 
         log.debug("Loaded Specialties...");
 
-        final var rasco = storePet(dogType, "Rasco");
-        final var oliver = storePet(catType, "Oliver");
+        final var rasco = createPet(dogType, "Rasco");
+        final var mike = storeOwnerAndPet("Michael", "Weston", "123 Brickell", "Miami", "305-555-0113", rasco);
 
-        log.debug("Loaded Pets...");
+        final var oliver = createPet(catType, "Oliver");
+        final var fiona = storeOwnerAndPet("Fiona", "Glenanne", "123 Brickell", "Miami", "305-555-0113", oliver);
 
-        final var mike = storeOwner("Michael", "Weston", "123 Brickell", "Miami", "305-555-0113");
-        final var fiona = storeOwner("Fiona", "Glenanne", "123 Brickell", "Miami", "305-555-0113");
-
-        log.debug("Loaded Owners...");
-
-        connectPetToOwner(rasco, mike);
-        connectPetToOwner(oliver, fiona);
-
-        log.debug("Connect owners and pets...");
+        log.debug("Loaded Owners and Pets...");
 
         final var sam = storeVet("Sam", "Axe", radiology);
         final var jessie = storeVet("Jessie", "Porter", surgery);
@@ -78,60 +71,61 @@ public class DataLoader implements CommandLineRunner {
         log.debug("Loaded Visits...");
     }
 
-    private PetType storePetType(final String type) {
-        final var dog = new PetType();
-        dog.setName(type);
-        return petTypeService.save(dog);
+    private PetType storePetType(final String name) {
+        final var petType = PetType.builder()
+                .name(name)
+                .build();
+        return petTypeService.save(petType);
     }
 
     private Specialty storeSpecialty(final String description) {
-        final Specialty radiology = new Specialty();
-        radiology.setDescription(description);
-        return specialtyService.save(radiology);
+        final var specialty = Specialty.builder()
+                .description(description)
+                .build();
+        return specialtyService.save(specialty);
     }
 
-    private Owner storeOwner(final String firstName,
-                             final String lastName,
-                             final String address,
-                             final String city,
-                             final String phone) {
-        final var owner = new Owner();
-        owner.setFirstName(firstName);
-        owner.setLastName(lastName);
-        owner.setAddress(address);
-        owner.setCity(city);
-        owner.setPhone(phone);
+    private Pet createPet(final PetType petType, final String name) {
+        return Pet.builder()
+                .petType(petType)
+                .birthDate(LocalDate.now())
+                .name(name)
+                .build();
+    }
+
+    private Owner storeOwnerAndPet(final String firstName,
+                                   final String lastName,
+                                   final String address,
+                                   final String city,
+                                   final String phone,
+                                   final Pet pet) {
+        final var owner = Owner.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .address(address)
+                .city(city)
+                .phone(phone)
+                .pets(new HashSet<>(List.of(pet)))
+                .build();
+        pet.setOwner(owner);
         return ownerService.save(owner);
     }
 
-    private void connectPetToOwner(final Pet pet, final Owner owner) {
-        pet.setOwner(owner);
-        petService.save(pet);
-        owner.getPets().add(pet);
-        ownerService.save(owner);
-    }
-
-    private Pet storePet(final PetType petType, final String name) {
-        final var pet = new Pet();
-        pet.setPetType(petType);
-        pet.setBirthDate(LocalDate.now());
-        pet.setName(name);
-        return petService.save(pet);
-    }
-
     private Vet storeVet(final String firstName, final String lastName, final Specialty specialty) {
-        final Vet vet1 = new Vet();
-        vet1.setFirstName(firstName);
-        vet1.setLastName(lastName);
-        vet1.getSpecialties().add(specialty);
-        return vetService.save(vet1);
+        final var vet = Vet.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .specialties(new HashSet<>(List.of(specialty)))
+                .build();
+        return vetService.save(vet);
     }
 
     private Visit storeVisit(final Pet pet, final String description) {
-        final var visit = new Visit();
-        visit.setPet(pet);
-        visit.setDate(LocalDate.now());
-        visit.setDescription(description);
+        final var visit = Visit.builder()
+                .pet(pet)
+                .date(LocalDate.now())
+                .description(description)
+                .build();
         return visitService.save(visit);
     }
 }

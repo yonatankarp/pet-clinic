@@ -11,18 +11,18 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
+@Data
+@Builder
 @Entity
 @Table(name = "pets")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@EqualsAndHashCode(callSuper = true)
 public class Pet extends BaseEntity {
 
     @Column(name = "name")
@@ -32,6 +32,7 @@ public class Pet extends BaseEntity {
     @JoinColumn(name = "type_id")
     private PetType petType;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private Owner owner;
