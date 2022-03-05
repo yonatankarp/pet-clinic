@@ -46,89 +46,75 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void loadData() {
-        final PetType dog = new PetType();
-        dog.setName("Dog");
-        final PetType savedDogType = petTypeService.save(dog);
-
-        final PetType cat = new PetType();
-        cat.setName("Cat");
-        final PetType savedCatType = petTypeService.save(cat);
+        final var dogType = storePetType("Dog");
+        final var catType = storePetType("Cat");
 
         System.out.println("Loaded Pet Type...");
 
-        final Specialty radiology = new Specialty();
-        radiology.setDescription("Radiology");
-        final Specialty savedRadiology = specialtyService.save(radiology);
-
-        final Specialty surgery = new Specialty();
-        radiology.setDescription("Surgery");
-        final Specialty savedSurgery = specialtyService.save(surgery);
-
-        final Specialty dentistry = new Specialty();
-        radiology.setDescription("Dentistry");
-        final Specialty savedDentistry = specialtyService.save(dentistry);
+        final var radiology = storeSpecialty("Radiology");
+        final var surgery = storeSpecialty("Surgery");
+        final var dentistry = storeSpecialty("Dentistry");
 
         System.out.println("Loaded Specialties...");
 
-        final Owner owner1 = new Owner();
-        owner1.setFirstName("Michael");
-        owner1.setLastName("Weston");
-        owner1.setAddress("123 Brickell");
-        owner1.setCity("Miami");
-        owner1.setPhone("305-555-0113");
+        final var mikesPet = storePet(dogType, "Rasco");
+        final var mike = storeOwner("Michael", "Weston", "123 Brickell", "Miami", "305-555-0113", mikesPet);
 
-        final Pet mikesPet = new Pet();
-        mikesPet.setPetType(savedDogType);
-        mikesPet.setOwner(owner1);
-        mikesPet.setBirthDate(LocalDate.now());
-        mikesPet.setName("Rasco");
-        owner1.getPets().add(mikesPet);
+        System.out.println("Loaded Pets...");
 
-        ownerService.save(owner1);
-
-        final Owner owner2 = new Owner();
-        owner2.setFirstName("Fiona");
-        owner2.setLastName("Glenanne");
-        owner2.setAddress("123 Brickell");
-        owner2.setCity("Miami");
-        owner2.setPhone("305-555-0113");
-        ownerService.save(owner2);
-
-        final Pet fionasCat = new Pet();
-        fionasCat.setPetType(savedCatType);
-        fionasCat.setBirthDate(LocalDate.now());
-        fionasCat.setOwner(owner2);
-        fionasCat.setName("Oliver");
-        owner2.getPets().add(fionasCat);
+        final var fionasCat = storePet(catType, "Oliver");
+        final var fiona = storeOwner("Fiona", "Glenanne", "123 Brickell", "Miami", "305-555-0113", fionasCat);
 
         System.out.println("Loaded Owners...");
 
-        final Vet vet1 = new Vet();
-        vet1.setFirstName("Sam");
-        vet1.setLastName("Axe");
-        vet1.getSpecialties().add(savedRadiology);
-        vetService.save(vet1);
-
-        final Vet vet2 = new Vet();
-        vet2.setFirstName("Jessie");
-        vet2.setLastName("Porter");
-        vet2.getSpecialties().add(savedSurgery);
-        vetService.save(vet2);
+        final var sam = storeVet("Sam", "Axe", radiology);
+        final var jessie = storeVet("Jessie", "Porter", surgery);
 
         System.out.println("Loaded Vets...");
+    }
 
-        final Pet pet1 = new Pet();
-        pet1.setOwner(owner1);
-        pet1.setBirthDate(LocalDate.of(2016, 9, 5));
-        pet1.setPetType(new PetType());
-        petService.save(pet1);
+    private PetType storePetType(final String type) {
+        final var dog = new PetType();
+        dog.setName(type);
+        return petTypeService.save(dog);
+    }
 
-        final Pet pet2 = new Pet();
-        pet2.setOwner(owner2);
-        pet2.setBirthDate(LocalDate.of(2019, 5, 11));
-        pet2.setPetType(new PetType());
-        petService.save(pet2);
+    private Specialty storeSpecialty(final String description) {
+        final Specialty radiology = new Specialty();
+        radiology.setDescription(description);
+        return specialtyService.save(radiology);
+    }
 
-        System.out.println("Loaded Pets...");
+    private Owner storeOwner(final String firstName,
+                             final String lastName,
+                             final String address,
+                             final String city,
+                             final String phone,
+                             final Pet pet) {
+        final var owner = new Owner();
+        owner.setFirstName(firstName);
+        owner.setLastName(lastName);
+        owner.setAddress(address);
+        owner.setCity(city);
+        owner.setPhone(phone);
+        owner.getPets().add(pet);
+        pet.setOwner(owner);
+        return ownerService.save(owner);
+    }
+
+    private Pet storePet(final PetType petType, final String name) {
+        final var pet = new Pet();
+        pet.setPetType(petType);
+        pet.setBirthDate(LocalDate.now());
+        pet.setName(name);
+        return petService.save(pet);
+    }
+
+    private Vet storeVet(final String firstName, final String lastName, final Specialty specialty) {
+        final Vet vet1 = new Vet();
+        vet1.setFirstName(firstName);
+        vet1.setLastName(lastName);
+        vet1.getSpecialties().add(specialty);
+        return vetService.save(vet1);
     }
 }
