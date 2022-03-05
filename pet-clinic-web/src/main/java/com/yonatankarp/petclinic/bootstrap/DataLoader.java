@@ -6,15 +6,19 @@ import com.yonatankarp.petclinic.model.Pet;
 import com.yonatankarp.petclinic.model.PetType;
 import com.yonatankarp.petclinic.model.Specialty;
 import com.yonatankarp.petclinic.model.Vet;
+import com.yonatankarp.petclinic.model.Visit;
 import com.yonatankarp.petclinic.services.OwnerService;
 import com.yonatankarp.petclinic.services.PetService;
 import com.yonatankarp.petclinic.services.PetTypeService;
 import com.yonatankarp.petclinic.services.SpecialtyService;
 import com.yonatankarp.petclinic.services.VetService;
+import com.yonatankarp.petclinic.services.VisitService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
 
     private final OwnerService ownerService;
@@ -22,18 +26,7 @@ public class DataLoader implements CommandLineRunner {
     private final PetService petService;
     private final PetTypeService petTypeService;
     private final SpecialtyService specialtyService;
-
-    public DataLoader(OwnerService ownerService,
-                      VetService vetService,
-                      PetService petService,
-                      PetTypeService petTypeService,
-                      SpecialtyService specialtyService) {
-        this.ownerService = ownerService;
-        this.vetService = vetService;
-        this.petService = petService;
-        this.petTypeService = petTypeService;
-        this.specialtyService = specialtyService;
-    }
+    private final VisitService visitService;
 
     @Override
     public void run(String... args) {
@@ -71,6 +64,11 @@ public class DataLoader implements CommandLineRunner {
         final var jessie = storeVet("Jessie", "Porter", surgery);
 
         System.out.println("Loaded Vets...");
+
+        final var dogVisit = storeVisit(mikesPet, "Tried Dog");
+        final var catVisit = storeVisit(fionasCat, "Sneezy Kitten");
+
+        System.out.println("Loaded Visits...");
     }
 
     private PetType storePetType(final String type) {
@@ -116,5 +114,13 @@ public class DataLoader implements CommandLineRunner {
         vet1.setLastName(lastName);
         vet1.getSpecialties().add(specialty);
         return vetService.save(vet1);
+    }
+
+    private Visit storeVisit(final Pet pet, final String description) {
+        final var visit = new Visit();
+        visit.setPet(pet);
+        visit.setDate(LocalDate.now());
+        visit.setDescription(description);
+        return visitService.save(visit);
     }
 }
