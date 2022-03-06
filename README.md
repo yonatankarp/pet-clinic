@@ -1,5 +1,9 @@
 # pet-clinic
 
+[![<build>](https://circleci.com/gh/yonatankarp/pet-clinic.svg?style=svg)](https://circleci.com/gh/yonatankarp/pet-clinic)
+
+
+
 Custom implementation of the classic [Spring Boot Pet Clinic](https://projects.spring.io/spring-com.yonatankarp.petclinic.petclinic/)
 solution.
 
