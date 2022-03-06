@@ -1,7 +1,7 @@
 package com.yonatankarp.petclinic.services.map;
 
 import java.util.Set;
-import com.yonatankarp.petclinic.model.Specialty;
+import com.yonatankarp.petclinic.model.Speciality;
 import com.yonatankarp.petclinic.model.Vet;
 import com.yonatankarp.petclinic.services.SpecialtyService;
 import com.yonatankarp.petclinic.services.VetService;
@@ -44,7 +44,7 @@ public class VetMapService extends AbstractMapService<Vet, Long> implements VetS
             if (vet.getSpecialties().size() > 0) {
                 vet.getSpecialties().forEach(specialty -> {
                     if (specialty.getId() == null) {
-                        final Specialty savedSpeciality = specialtyService.save(specialty);
+                        final Speciality savedSpeciality = specialtyService.save(specialty);
                         specialty.setId(savedSpeciality.getId());
                     }
                 });

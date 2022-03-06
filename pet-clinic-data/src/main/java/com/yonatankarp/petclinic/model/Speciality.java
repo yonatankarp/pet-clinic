@@ -13,11 +13,17 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "specialties")
 @SuppressWarnings("JpaDataSourceORMInspection")
-public class Specialty extends BaseEntity {
+public class Speciality extends BaseEntity {
+
+    @Builder
+    public Speciality(final Long id, final String description) {
+        super(id);
+        this.description = description;
+    }
+
     @Column(name = "description")
     private String description;
 }

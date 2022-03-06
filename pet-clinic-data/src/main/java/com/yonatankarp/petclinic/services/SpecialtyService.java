@@ -1,6 +1,6 @@
 package com.yonatankarp.petclinic.services;
 
-import com.yonatankarp.petclinic.model.Specialty;
+import com.yonatankarp.petclinic.model.Speciality;
 
-public interface SpecialtyService extends CrudService<Specialty, Long> {
+public interface SpecialtyService extends CrudService<Speciality, Long> {
 }

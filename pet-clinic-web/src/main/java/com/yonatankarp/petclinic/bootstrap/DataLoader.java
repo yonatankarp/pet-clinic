@@ -6,7 +6,7 @@ import java.util.List;
 import com.yonatankarp.petclinic.model.Owner;
 import com.yonatankarp.petclinic.model.Pet;
 import com.yonatankarp.petclinic.model.PetType;
-import com.yonatankarp.petclinic.model.Specialty;
+import com.yonatankarp.petclinic.model.Speciality;
 import com.yonatankarp.petclinic.model.Vet;
 import com.yonatankarp.petclinic.model.Visit;
 import com.yonatankarp.petclinic.services.OwnerService;
@@ -77,8 +77,8 @@ public class DataLoader implements CommandLineRunner {
         return petTypeService.save(petType);
     }
 
-    private Specialty storeSpecialty(final String description) {
-        final var specialty = Specialty.builder().description(description).build();
+    private Speciality storeSpecialty(final String description) {
+        final var specialty = Speciality.builder().description(description).build();
         return specialtyService.save(specialty);
     }
 
@@ -108,11 +108,11 @@ public class DataLoader implements CommandLineRunner {
         return ownerService.save(owner);
     }
 
-    private Vet storeVet(final String firstName, final String lastName, final Specialty specialty) {
+    private Vet storeVet(final String firstName, final String lastName, final Speciality speciality) {
         return vetService.save(Vet.builder()
                 .firstName(firstName)
                 .lastName(lastName)
-                .specialties(new HashSet<>(List.of(specialty)))
+                .specialties(new HashSet<>(List.of(speciality)))
                 .build());
     }
 

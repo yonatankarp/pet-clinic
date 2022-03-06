@@ -16,11 +16,22 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "visits")
 @SuppressWarnings("JpaDataSourceORMInspection")
 public class Visit extends BaseEntity {
+
+    @Builder
+    public Visit(final Long id,
+                 final LocalDate date,
+                 final String description,
+                 final Pet pet) {
+        super(id);
+        this.date = date;
+        this.description = description;
+        this.pet = pet;
+    }
+
     @Column(name = "visit_date")
     private LocalDate date;
 

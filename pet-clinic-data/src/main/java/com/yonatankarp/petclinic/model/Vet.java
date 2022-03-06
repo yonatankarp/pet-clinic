@@ -24,14 +24,17 @@ import lombok.Setter;
 public class Vet extends Person {
 
     @Builder
-    public Vet(Long id, String firstName, String lastName, Set<Specialty> specialties) {
+    public Vet(Long id, String firstName, String lastName, Set<Speciality> specialties) {
         super(id, firstName, lastName);
-        this.specialties = specialties;
+
+        if(specialties != null) {
+            this.specialties = specialties;
+        }
     }
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "vet_specialties",
             joinColumns = @JoinColumn(name = "vat_id"),
             inverseJoinColumns = @JoinColumn(name = "specialty_id"))
-    private Set<Specialty> specialties = new HashSet<>();
+    private Set<Speciality> specialties = new HashSet<>();
 }
