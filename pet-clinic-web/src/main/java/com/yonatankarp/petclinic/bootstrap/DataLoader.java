@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@SuppressWarnings({"unused", "SameParameterValue", "SpellCheckingInspection"})
 public class DataLoader implements CommandLineRunner {
 
     private final OwnerService ownerService;
@@ -72,16 +73,12 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private PetType storePetType(final String name) {
-        final var petType = PetType.builder()
-                .name(name)
-                .build();
+        final var petType = PetType.builder().name(name).build();
         return petTypeService.save(petType);
     }
 
     private Specialty storeSpecialty(final String description) {
-        final var specialty = Specialty.builder()
-                .description(description)
-                .build();
+        final var specialty = Specialty.builder().description(description).build();
         return specialtyService.save(specialty);
     }
 
@@ -112,20 +109,18 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private Vet storeVet(final String firstName, final String lastName, final Specialty specialty) {
-        final var vet = Vet.builder()
+        return vetService.save(Vet.builder()
                 .firstName(firstName)
                 .lastName(lastName)
                 .specialties(new HashSet<>(List.of(specialty)))
-                .build();
-        return vetService.save(vet);
+                .build());
     }
 
     private Visit storeVisit(final Pet pet, final String description) {
-        final var visit = Visit.builder()
+        return visitService.save( Visit.builder()
                 .pet(pet)
                 .date(LocalDate.now())
                 .description(description)
-                .build();
-        return visitService.save(visit);
+                .build());
     }
 }

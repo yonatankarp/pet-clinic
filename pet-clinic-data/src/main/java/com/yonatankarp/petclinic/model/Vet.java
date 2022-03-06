@@ -10,21 +10,22 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@Entity
-@Table(name = "vets")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "vets")
+@SuppressWarnings("JpaDataSourceORMInspection")
 public class Vet extends Person {
 
     @Builder
-    public Vet(final String firstName,
-               final String lastName,
-               final Set<Specialty> specialties) {
-        super(firstName, lastName);
+    public Vet(Long id, String firstName, String lastName, Set<Specialty> specialties) {
+        super(id, firstName, lastName);
         this.specialties = specialties;
     }
 

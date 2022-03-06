@@ -5,15 +5,18 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "specialties")
-@NoArgsConstructor
-@AllArgsConstructor
+@SuppressWarnings("JpaDataSourceORMInspection")
 public class Specialty extends BaseEntity {
     @Column(name = "description")
     private String description;

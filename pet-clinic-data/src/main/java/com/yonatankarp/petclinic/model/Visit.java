@@ -8,15 +8,18 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "visits")
-@NoArgsConstructor
-@AllArgsConstructor
+@SuppressWarnings("JpaDataSourceORMInspection")
 public class Visit extends BaseEntity {
     @Column(name = "visit_date")
     private LocalDate date;

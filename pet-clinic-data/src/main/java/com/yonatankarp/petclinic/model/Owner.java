@@ -8,29 +8,35 @@ import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "owners")
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@SuppressWarnings("JpaDataSourceORMInspection")
 public class Owner extends Person {
 
     @Builder
-    public Owner(final String firstName,
+    public Owner(final Long id,
+                 final String firstName,
                  final String lastName,
                  final String address,
                  final String city,
                  final String phone,
                  final Set<Pet> pets) {
-        super(firstName, lastName);
+        super(id, firstName, lastName);
         this.address = address;
         this.city = city;
         this.phone = phone;
-        this.pets = pets;
+
+        if(pets != null) {
+            this.pets = pets;
+        }
     }
 
     @Column(name = "address")
@@ -44,5 +50,6 @@ public class Owner extends Person {
 
     @Column
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    @ToString.Exclude
     private Set<Pet> pets = new HashSet<>();
 }

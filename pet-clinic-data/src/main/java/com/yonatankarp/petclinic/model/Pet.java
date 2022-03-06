@@ -12,18 +12,38 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
-@Builder
-@Entity
-@Table(name = "pets")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@Entity
+@Table(name = "pets")
+@SuppressWarnings("JpaDataSourceORMInspection")
 public class Pet extends BaseEntity {
+
+    @Builder
+    public Pet(final Long id,
+               final String name,
+               final PetType petType,
+               final Owner owner,
+               final LocalDate birthDate,
+               final Set<Visit> visits) {
+        super(id);
+        this.name = name;
+        this.petType = petType;
+        this.owner = owner;
+        this.birthDate = birthDate;
+
+        if(visits != null) {
+            this.visits = visits;
+        }
+    }
 
     @Column(name = "name")
     private String name;
@@ -41,5 +61,6 @@ public class Pet extends BaseEntity {
     private LocalDate birthDate;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet")
+    @ToString.Exclude
     private Set<Visit> visits = new HashSet<>();
 }
