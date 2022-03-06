@@ -24,3 +24,10 @@ For example:
 ```properties
 spring.profiles.active=jpa
 ```
+
+## Compiling the CSS
+
+The CSS of this project is compiled from the folder `src/main/rersoures/static/resources/scss`
+sources, combined with the [Bootstrap](https://getbootstrap.com/) library. If
+you make changes to the `scss`, or upgrade Bootstrap, you will need to re-compile
+the project using Maven , i.e. `./mvnw package`.
