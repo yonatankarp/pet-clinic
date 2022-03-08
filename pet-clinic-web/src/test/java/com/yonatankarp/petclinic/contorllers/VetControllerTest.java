@@ -5,8 +5,9 @@ import java.util.Set;
 import com.yonatankarp.petclinic.model.Vet;
 import com.yonatankarp.petclinic.services.VetService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -42,51 +43,14 @@ class VetControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
-    @Test
-    void listVets() throws Exception {
+
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/vets", "/vets/", "/vets/index", "/vets/index.html", "/vets.html"})
+    void listVets(final String url) throws Exception {
         when(vetService.findAll()).thenReturn(vets);
 
-        mockMvc.perform(get("/vets"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("vets/index"))
-                .andExpect(model().attribute("vets", hasSize(2)));
-    }
-
-    @Test
-    void listVetsWithSlash() throws Exception {
-        when(vetService.findAll()).thenReturn(vets);
-
-        mockMvc.perform(get("/vets/"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("vets/index"))
-                .andExpect(model().attribute("vets", hasSize(2)));
-    }
-
-    @Test
-    void listVetsByIndex() throws Exception {
-        when(vetService.findAll()).thenReturn(vets);
-
-        mockMvc.perform(get("/vets/index"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("vets/index"))
-                .andExpect(model().attribute("vets", hasSize(2)));
-    }
-
-    @Test
-    void listVetsByIndexHtml() throws Exception {
-        when(vetService.findAll()).thenReturn(vets);
-
-        mockMvc.perform(get("/vets/index.html"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("vets/index"))
-                .andExpect(model().attribute("vets", hasSize(2)));
-    }
-
-    @Test
-    void listVetsByIndexHtmlOnRoot() throws Exception {
-        when(vetService.findAll()).thenReturn(vets);
-
-        mockMvc.perform(get("/vets.html"))
+        mockMvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andExpect(view().name("vets/index"))
                 .andExpect(model().attribute("vets", hasSize(2)));

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import com.yonatankarp.petclinic.exceptions.NullEntityException;
 import com.yonatankarp.petclinic.model.BaseEntity;
 
 public abstract class AbstractMapService<T extends BaseEntity, ID extends Long> {
@@ -28,7 +29,7 @@ public abstract class AbstractMapService<T extends BaseEntity, ID extends Long> 
 
             map.put(object.getId(), object);
         } else {
-            throw new RuntimeException("Object cannot be null");
+            throw new NullEntityException();
         }
         return object;
     }

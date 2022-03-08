@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -47,7 +46,7 @@ class OwnerJpaServiceTest {
 
         assertEquals(LAST_NAME, smith.getLastName());
 
-        verify(ownerRepository).findByLastName(eq("Smith"));
+        verify(ownerRepository).findByLastName("Smith");
     }
 
     @Test
@@ -73,7 +72,7 @@ class OwnerJpaServiceTest {
 
         assertNotNull(owner);
 
-        verify(ownerRepository).findById(eq(OWNER_ID));
+        verify(ownerRepository).findById(OWNER_ID);
     }
 
     @Test
@@ -87,7 +86,7 @@ class OwnerJpaServiceTest {
 
         assertNull(owner);
 
-        verify(ownerRepository).findById(eq(nonExistOwnerId));
+        verify(ownerRepository).findById(nonExistOwnerId);
     }
 
     @Test
@@ -100,20 +99,20 @@ class OwnerJpaServiceTest {
 
         assertNotNull(savedOwner);
 
-        verify(ownerRepository).save(eq(ownerToSave));
+        verify(ownerRepository).save(ownerToSave);
     }
 
     @Test
     void delete() {
         ownerJpaService.delete(returnOwner);
 
-        verify(ownerRepository).delete(eq(returnOwner));
+        verify(ownerRepository).delete(returnOwner);
     }
 
     @Test
     void deleteById() {
         ownerJpaService.deleteById(OWNER_ID);
 
-        verify(ownerRepository).deleteById(eq(OWNER_ID));
+        verify(ownerRepository).deleteById(OWNER_ID);
     }
 }

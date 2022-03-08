@@ -1,6 +1,11 @@
 # pet-clinic
 
 [![<build>](https://circleci.com/gh/yonatankarp/pet-clinic.svg?style=svg)](https://circleci.com/gh/yonatankarp/pet-clinic)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=yonatankarp_pet-clinic&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=yonatankarp_pet-clinic)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=yonatankarp_pet-clinic&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=yonatankarp_pet-clinic)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=yonatankarp_pet-clinic&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=yonatankarp_pet-clinic)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=yonatankarp_pet-clinic&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=yonatankarp_pet-clinic)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=yonatankarp_pet-clinic&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=yonatankarp_pet-clinic)
 
 
 

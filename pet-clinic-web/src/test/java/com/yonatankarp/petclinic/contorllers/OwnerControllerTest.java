@@ -7,6 +7,8 @@ import com.yonatankarp.petclinic.services.OwnerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -43,41 +45,12 @@ class OwnerControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
-    @Test
-    void listOwners() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {"/owners", "/owners/", "/owners/index", "/owners/index.html"})
+    void listOwners(final String url) throws Exception {
         when(ownerService.findAll()).thenReturn(owners);
 
-        mockMvc.perform(get("/owners"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("owners/index"))
-                .andExpect(model().attribute("owners", hasSize(2)));
-    }
-
-    @Test
-    void listOwnersWithSlash() throws Exception {
-        when(ownerService.findAll()).thenReturn(owners);
-
-        mockMvc.perform(get("/owners/"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("owners/index"))
-                .andExpect(model().attribute("owners", hasSize(2)));
-    }
-
-    @Test
-    void listOwnersByIndex() throws Exception {
-        when(ownerService.findAll()).thenReturn(owners);
-
-        mockMvc.perform(get("/owners/index"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("owners/index"))
-                .andExpect(model().attribute("owners", hasSize(2)));
-    }
-
-    @Test
-    void listOwnersByIndexHtml() throws Exception {
-        when(ownerService.findAll()).thenReturn(owners);
-
-        mockMvc.perform(get("/owners/index.html"))
+        mockMvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andExpect(view().name("owners/index"))
                 .andExpect(model().attribute("owners", hasSize(2)));

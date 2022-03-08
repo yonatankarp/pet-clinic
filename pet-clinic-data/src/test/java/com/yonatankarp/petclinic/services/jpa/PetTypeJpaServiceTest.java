@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -61,7 +60,7 @@ class PetTypeJpaServiceTest {
 
         assertNotNull(petType);
 
-        verify(petTypeRepository).findById(eq(PET_TYPE_ID));
+        verify(petTypeRepository).findById(PET_TYPE_ID);
     }
 
     @Test
@@ -75,7 +74,7 @@ class PetTypeJpaServiceTest {
 
         assertNull(petType);
 
-        verify(petTypeRepository).findById(eq(nonExistPetId));
+        verify(petTypeRepository).findById(nonExistPetId);
     }
 
     @Test
@@ -88,20 +87,20 @@ class PetTypeJpaServiceTest {
 
         assertNotNull(savedPetType);
 
-        verify(petTypeRepository).save(eq(petTypeToSave));
+        verify(petTypeRepository).save(petTypeToSave);
     }
 
     @Test
     void delete() {
         petTypeJpaService.delete(returnPetType);
 
-        verify(petTypeRepository).delete(eq(returnPetType));
+        verify(petTypeRepository).delete(returnPetType);
     }
 
     @Test
     void deleteById() {
         petTypeJpaService.deleteById(PET_TYPE_ID);
 
-        verify(petTypeRepository).deleteById(eq(PET_TYPE_ID));
+        verify(petTypeRepository).deleteById(PET_TYPE_ID);
     }
 }

@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -61,7 +60,7 @@ class VisitJpaServiceTest {
 
         assertNotNull(visit);
 
-        verify(visitRepository).findById(eq(VISIT_ID));
+        verify(visitRepository).findById(VISIT_ID);
     }
 
     @Test
@@ -75,7 +74,7 @@ class VisitJpaServiceTest {
 
         assertNull(visit);
 
-        verify(visitRepository).findById(eq(nonExistPetId));
+        verify(visitRepository).findById(nonExistPetId);
     }
 
     @Test
@@ -88,20 +87,20 @@ class VisitJpaServiceTest {
 
         assertNotNull(savedVisit);
 
-        verify(visitRepository).save(eq(visitToSave));
+        verify(visitRepository).save(visitToSave);
     }
 
     @Test
     void delete() {
         visitJpaService.delete(returnVisit);
 
-        verify(visitRepository).delete(eq(returnVisit));
+        verify(visitRepository).delete(returnVisit);
     }
 
     @Test
     void deleteById() {
         visitJpaService.deleteById(VISIT_ID);
 
-        verify(visitRepository).deleteById(eq(VISIT_ID));
+        verify(visitRepository).deleteById(VISIT_ID);
     }
 }

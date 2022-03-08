@@ -1,6 +1,7 @@
 package com.yonatankarp.petclinic.services.map;
 
 import java.util.Set;
+import com.yonatankarp.petclinic.exceptions.PetTypeNotExistsException;
 import com.yonatankarp.petclinic.model.Owner;
 import com.yonatankarp.petclinic.model.Pet;
 import com.yonatankarp.petclinic.model.PetType;
@@ -31,30 +32,40 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
 
     @Override
     public Owner save(final Owner owner) {
-        if(owner != null) {
-            if(owner.getPets() != null) {
-                owner.getPets().forEach(pet -> {
-                    if(pet.getPetType() != null) {
-                        // Ensure that pet type id is stored to our persistence layer
-                        if(pet.getPetType().getId() == null) {
-                            final PetType savedPetType = petTypeService.save(pet.getPetType());
-                            pet.setPetType(savedPetType);
-                        }
-                    } else {
-                        throw new RuntimeException("Pet type is required.");
-                    }
-
-                    // Ensure that pet id is stored to our persistence layer
-                    if(pet.getId() == null) {
-                        final Pet savedPet = petService.save(pet);
-                        pet.setId(savedPet.getId());
-                    }
-                });
+        if (owner != null) {
+            if (owner.getPets() != null) {
+                owner.getPets().forEach(this::savePet);
             }
+
             return super.save(owner);
         }
 
+
         return null;
+    }
+
+    private void savePet(final Pet pet) {
+        final var savedPetType = savePetType(pet.getPetType());
+        pet.setPetType(savedPetType);
+
+        // Ensure that pet id is stored to our persistence layer
+        if (pet.getId() == null) {
+            final Pet savedPet = petService.save(pet);
+            pet.setId(savedPet.getId());
+        }
+    }
+
+    private PetType savePetType(final PetType petType) {
+        if (petType == null) {
+            throw new PetTypeNotExistsException("Pet type is required.");
+        }
+
+        // Ensure that pet type id is stored to our persistence layer
+        if (petType.getId() == null) {
+            return petTypeService.save(petType);
+        }
+
+        return petType;
     }
 
     @Override
