@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -25,6 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 class OwnerControllerTest {
+
+    private static final Long OWNER_ID_1 = 1L;
+    private static final Long OWNER_ID_2 = 2L;
 
     @Mock
     private OwnerService ownerService;
@@ -39,8 +43,8 @@ class OwnerControllerTest {
     @BeforeEach
     void setUp() {
         owners = new HashSet<>();
-        owners.add(Owner.builder().id(1L).build());
-        owners.add(Owner.builder().id(2L).build());
+        owners.add(Owner.builder().id(OWNER_ID_1).build());
+        owners.add(Owner.builder().id(OWNER_ID_2).build());
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
@@ -63,5 +67,16 @@ class OwnerControllerTest {
                 .andExpect(view().name("not_implemented"));
 
         Mockito.verifyNoInteractions(ownerService);
+    }
+
+    @Test
+    void displayOwners() throws Exception {
+        final var owner = owners.iterator().next();
+        when(ownerService.findById(anyLong())).thenReturn(owner);
+
+        mockMvc.perform(get("/owners/" + owner.getId()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/owner_details"))
+                .andExpect(model().attribute("owner", owner));
     }
 }
