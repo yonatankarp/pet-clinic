@@ -1,5 +1,6 @@
 package com.yonatankarp.petclinic.controllers;
 
+import javax.validation.Valid;
 import com.yonatankarp.petclinic.model.Owner;
 import com.yonatankarp.petclinic.services.OwnerService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class OwnerController {
 
     private static final String VIEWS_FIND_OWNER_FORM = "owners/find_owners";
+    private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/create_or_update_owner_form";
 
     private final OwnerService ownerService;
 
@@ -65,5 +67,41 @@ public class OwnerController {
         final var modelAndView = new ModelAndView("owners/owner_details");
         modelAndView.addObject(ownerService.findById(ownerId));
         return modelAndView;
+    }
+
+    @GetMapping("/new")
+    public String initCreationForm(final Model model) {
+        model.addAttribute("owner", Owner.builder().build());
+
+        return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+    }
+
+    @PostMapping("/new")
+    public String processCreationForm(@Valid final Owner owner, final BindingResult result) {
+        if (result.hasErrors()) {
+            return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+        }
+
+        final var savedOwner = ownerService.save(owner);
+        return String.format("redirect:/owners/%d", savedOwner.getId());
+    }
+
+    @GetMapping("/{ownerId}/edit")
+    public String initUpdateOwnerForm(@PathVariable final Long ownerId, final Model model) {
+        model.addAttribute(ownerService.findById(ownerId));
+        return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+    }
+
+    @PostMapping("/{ownerId}/edit")
+    public String processUpdateOwnerForm(@PathVariable Long ownerId,
+                                         @Valid final Owner owner,
+                                         final BindingResult result) {
+        if (result.hasErrors()) {
+            return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+        }
+
+        owner.setId(ownerId);
+        final var savedOwner = ownerService.save(owner);
+        return String.format("redirect:/owners/%d", savedOwner.getId());
     }
 }
