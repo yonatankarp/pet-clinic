@@ -11,6 +11,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,6 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/owners")
 @RequiredArgsConstructor
 public class OwnerController {
+
+    private static final String VIEWS_FIND_OWNER_FORM = "owners/find_owners";
 
     private final OwnerService ownerService;
 
@@ -54,7 +57,7 @@ public class OwnerController {
     @GetMapping("/find")
     public String findOwners(final Model model) {
         model.addAttribute("owner", Owner.builder().build());
-        return "owners/find_owners";
+        return VIEWS_FIND_OWNER_FORM;
     }
 
     @GetMapping("/{ownerId}")
