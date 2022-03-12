@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 class PetTypeJpaServiceTest {
 
     private static final Long PET_TYPE_ID = 1L;
+    private static final String PET_TYPE_NAME = "Dog";
 
     @Mock
     private PetTypeRepository petTypeRepository;
@@ -102,5 +103,12 @@ class PetTypeJpaServiceTest {
         petTypeJpaService.deleteById(PET_TYPE_ID);
 
         verify(petTypeRepository).deleteById(PET_TYPE_ID);
+    }
+
+    @Test
+    void findByName() {
+        petTypeJpaService.findByName(PET_TYPE_NAME);
+
+        verify(petTypeRepository).findByName(PET_TYPE_NAME);
     }
 }

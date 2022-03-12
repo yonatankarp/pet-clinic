@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Profile({"default", "map"})
-public class PetTypeMapService extends AbstractMapService<PetType, Long>  implements PetTypeService{
+public class PetTypeMapService extends AbstractMapService<PetType, Long> implements PetTypeService {
     @Override
     public Set<PetType> findAll() {
         return super.findAll();
@@ -32,5 +32,13 @@ public class PetTypeMapService extends AbstractMapService<PetType, Long>  implem
     @Override
     public PetType findById(final Long id) {
         return super.findById(id);
+    }
+
+    @Override
+    public PetType findByName(final String name) {
+        return map.values().stream()
+                .filter(petType -> petType.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
     }
 }

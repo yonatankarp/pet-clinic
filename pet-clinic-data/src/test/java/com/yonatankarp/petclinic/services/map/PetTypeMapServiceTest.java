@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class PetTypeMapServiceTest {
 
     private static final Long PET_TYPE_ID = 1L;
+    private static final String PET_TYPE_NAME = "Cat";
 
     private PetTypeMapService petTypeMapService;
 
@@ -18,7 +19,7 @@ class PetTypeMapServiceTest {
     void setUp() {
         petTypeMapService = new PetTypeMapService();
 
-        petTypeMapService.save(PetType.builder().id(PET_TYPE_ID).build());
+        petTypeMapService.save(PetType.builder().id(PET_TYPE_ID).name(PET_TYPE_NAME).build());
     }
 
     @Test
@@ -138,5 +139,28 @@ class PetTypeMapServiceTest {
         petTypeMapService.deleteById(null);
 
         assertEquals(1, petTypeMapService.findAll().size());
+    }
+
+    @Test
+    void findByName() {
+        final var petType = petTypeMapService.findByName(PET_TYPE_NAME);
+
+        assertNotNull(petType);
+        assertEquals(PET_TYPE_ID, petType.getId());
+        assertEquals(PET_TYPE_NAME, petType.getName());
+    }
+
+    @Test
+    void findByNameNullName() {
+        final var petType = petTypeMapService.findByName(null);
+
+        assertNull(petType);
+    }
+
+    @Test
+    void findByNameWrongName() {
+        final var petType = petTypeMapService.findByName("Dog");
+
+        assertNull(petType);
     }
 }
