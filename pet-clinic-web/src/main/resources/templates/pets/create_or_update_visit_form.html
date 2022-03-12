@@ -9,6 +9,7 @@
   </h2>
 
   <b>Pet</b>
+  <!--/*@thymesVar id="owner" type="com.yonatankarp.petclinic.model.Pet"*/-->
   <table class="table table-striped">
     <thead>
       <tr>
@@ -22,9 +23,9 @@
       <td th:text="${pet.name}"></td>
       <td
         th:text="${#temporals.format(pet.birthDate, 'yyyy-MM-dd')}"></td>
-      <td th:text="${pet.type}"></td>
+      <td th:text="${pet.petType}"></td>
       <td
-        th:text="${owner?.firstName + ' ' + owner?.lastName}"></td>
+        th:text="${pet?.owner?.firstName + ' ' + pet?.owner?.lastName}"></td>
     </tr>
   </table>
 
