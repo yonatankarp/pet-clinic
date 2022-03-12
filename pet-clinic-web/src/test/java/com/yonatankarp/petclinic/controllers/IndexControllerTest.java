@@ -1,4 +1,4 @@
-package com.yonatankarp.petclinic.contorllers;
+package com.yonatankarp.petclinic.controllers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

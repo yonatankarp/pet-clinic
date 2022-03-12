@@ -1,4 +1,4 @@
-package com.yonatankarp.petclinic.contorllers;
+package com.yonatankarp.petclinic.controllers;
 
 import com.yonatankarp.petclinic.model.Owner;
 import com.yonatankarp.petclinic.services.OwnerService;

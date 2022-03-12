@@ -1,4 +1,4 @@
-package com.yonatankarp.petclinic.contorllers;
+package com.yonatankarp.petclinic.controllers;
 
 import java.util.HashSet;
 import java.util.Set;
