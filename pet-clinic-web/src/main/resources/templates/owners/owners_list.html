@@ -17,8 +17,8 @@
   </tr>
   </thead>
   <tbody>
-  <!--/*@thymesVar id="listOwners" type="java.util.Set<com.yonatankarp.petclinic.model.Owner>"*/-->
-  <tr th:each="owner : ${listOwners}">
+  <!--/*@thymesVar id="listOwners" type="java.util.Set<util.Set<com.yonatankarp.petclinic.model.Owner>"*/-->
+  <tr th:each="owner : ${owners}">
     <td>
       <a th:href="@{/owners/__${owner.id}__}" th:text="${owner.firstName + ' ' + owner.lastName}"/></a>
     </td>

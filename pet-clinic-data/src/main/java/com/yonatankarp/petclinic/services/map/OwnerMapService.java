@@ -1,6 +1,7 @@
 package com.yonatankarp.petclinic.services.map;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 import com.yonatankarp.petclinic.exceptions.PetTypeNotExistsException;
 import com.yonatankarp.petclinic.model.Owner;
 import com.yonatankarp.petclinic.model.Pet;
@@ -84,5 +85,12 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
                 .stream().filter(owner -> owner.getLastName().equalsIgnoreCase(lastName))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public Set<Owner> findAllByLastNameLike(final String lastNameLike) {
+        return map.values().stream()
+                .filter(owner -> owner.getLastName().toLowerCase().contains(lastNameLike.toLowerCase()))
+                .collect(Collectors.toSet());
     }
 }

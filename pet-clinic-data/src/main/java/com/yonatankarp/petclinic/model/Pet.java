@@ -63,4 +63,9 @@ public class Pet extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet")
     @ToString.Exclude
     private Set<Visit> visits = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

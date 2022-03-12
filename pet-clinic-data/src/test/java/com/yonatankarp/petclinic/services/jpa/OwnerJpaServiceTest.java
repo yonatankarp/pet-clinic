@@ -22,8 +22,10 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class OwnerJpaServiceTest {
 
-    private static final Long OWNER_ID = 1L;
-    private static final String LAST_NAME = "Smith";
+    private static final Long OWNER_ID_1 = 1L;
+    private static final String OWNER_LAST_NAME_1 = "Smith";
+    private static final Long OWNER_ID_2 = 2L;
+    private static final String OWNER_LAST_NAME_2 = "Smooth";
 
     @Mock
     private OwnerRepository ownerRepository;
@@ -35,24 +37,31 @@ class OwnerJpaServiceTest {
 
     @BeforeEach
     void setUp() {
-        returnOwner = Owner.builder().id(OWNER_ID).lastName(LAST_NAME).build();
+        returnOwner = Owner.builder().id(OWNER_ID_1).lastName(OWNER_LAST_NAME_1).build();
     }
 
     @Test
     void findByLastName() {
         when(ownerRepository.findByLastName(any())).thenReturn(returnOwner);
 
-        final var smith = ownerJpaService.findByLastName(LAST_NAME);
+        final var smith = ownerJpaService.findByLastName(OWNER_LAST_NAME_1);
 
-        assertEquals(LAST_NAME, smith.getLastName());
+        assertEquals(OWNER_LAST_NAME_1, smith.getLastName());
 
         verify(ownerRepository).findByLastName("Smith");
     }
 
     @Test
+    void findByLastNameNotFound() {
+        final var owner = ownerJpaService.findByLastName("foo");
+
+        assertNull(owner);
+    }
+
+    @Test
     void findAll() {
         final var returnOwners = new HashSet<Owner>();
-        returnOwners.add(Owner.builder().id(OWNER_ID).build());
+        returnOwners.add(Owner.builder().id(OWNER_ID_1).build());
         returnOwners.add(Owner.builder().id(2L).build());
 
         when(ownerRepository.findAll()).thenReturn(returnOwners);
@@ -68,11 +77,11 @@ class OwnerJpaServiceTest {
     void findById() {
         when(ownerRepository.findById(anyLong())).thenReturn(Optional.of(returnOwner));
 
-        final var owner = ownerJpaService.findById(OWNER_ID);
+        final var owner = ownerJpaService.findById(OWNER_ID_1);
 
         assertNotNull(owner);
 
-        verify(ownerRepository).findById(OWNER_ID);
+        verify(ownerRepository).findById(OWNER_ID_1);
     }
 
     @Test
@@ -91,7 +100,7 @@ class OwnerJpaServiceTest {
 
     @Test
     void save() {
-        final var ownerToSave = Owner.builder().id(OWNER_ID).build();
+        final var ownerToSave = Owner.builder().id(OWNER_ID_1).build();
 
         when(ownerRepository.save(any())).thenReturn(returnOwner);
 
@@ -111,8 +120,8 @@ class OwnerJpaServiceTest {
 
     @Test
     void deleteById() {
-        ownerJpaService.deleteById(OWNER_ID);
+        ownerJpaService.deleteById(OWNER_ID_1);
 
-        verify(ownerRepository).deleteById(OWNER_ID);
+        verify(ownerRepository).deleteById(OWNER_ID_1);
     }
 }
