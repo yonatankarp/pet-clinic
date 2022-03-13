@@ -5,12 +5,14 @@ import java.util.Set;
 import com.yonatankarp.petclinic.model.Vet;
 import com.yonatankarp.petclinic.services.VetService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -43,8 +45,6 @@ class VetControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
-
-
     @ParameterizedTest
     @ValueSource(strings = {"/vets", "/vets/", "/vets/index", "/vets/index.html", "/vets.html"})
     void listVets(final String url) throws Exception {
@@ -54,5 +54,18 @@ class VetControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("vets/index"))
                 .andExpect(model().attribute("vets", hasSize(2)));
+    }
+
+    @Test
+    void vetsJson() throws Exception {
+        when(vetService.findAll()).thenReturn(vets);
+
+        final var response = mockMvc.perform(get("/api/vets"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+
+        final var expectedJson = "[{\"id\":2,\"firstName\":null,\"lastName\":null,\"specialties\":[],\"new\":false},{\"id\":1,\"firstName\":null,\"lastName\":null,\"specialties\":[],\"new\":false}]";
+
+        JSONAssert.assertEquals(expectedJson, response.getContentAsString(), false);
     }
 }
