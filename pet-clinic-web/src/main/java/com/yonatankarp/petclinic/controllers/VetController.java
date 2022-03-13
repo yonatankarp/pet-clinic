@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class VetController {
 
-    private static final String VIEWS_VETS_LIST_FORM = "vets/index";
-
     private final VetService vetService;
 
     @RequestMapping({ "/vets", "/vets/index", "/vets/index.html", "/vets.html"})
     public String listVets(final Model model) {
         model.addAttribute("vets", vetService.findAll());
-        return VIEWS_VETS_LIST_FORM;
+        return "vets/index";
     }
 }
